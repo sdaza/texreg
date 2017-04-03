@@ -668,7 +668,7 @@ setMethod("extract", signature = className("coxph", "survival"),
 extract.coxph.penal <- function(model, include.aic = TRUE,
     include.rsquared = TRUE, include.maxrs = TRUE, include.events = TRUE,
     include.nobs = TRUE, include.missings = TRUE, include.zph = TRUE,
-    include.frailty = TRUE, ...) {
+    include.frailty = TRUE, include.pfrailty = TRUE, ...) {
 
   coefficients <- coef(model, ...)
   coefficient.names <- names(coefficients)
@@ -684,8 +684,9 @@ extract.coxph.penal <- function(model, include.aic = TRUE,
   maxrs <- 1 - exp((2 * model$loglik[1]) / model$n)
 
   frailty <- round(model$history[[1]]$theta, 2)
-  pfrailty <- round(summary(model)$coefficients[
-                    grep("frailty", rownames(c)), "p"], 2)
+  tmp <- summary(model)$coefficients
+  pfrailty <- round(tmp[grep("frailty", rownames(tmp)), "p"], 2)
+
   gof <- numeric()
   gof.names <- character()
   gof.decimal <- logical()
