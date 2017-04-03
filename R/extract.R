@@ -665,10 +665,12 @@ setMethod("extract", signature = className("coxph", "survival"),
     definition = extract.coxph)
 
 
+
 # extension for coxph.penal objects (survival package)
 extract.coxph.penal <- function(model, include.aic = TRUE,
     include.rsquared = TRUE, include.maxrs = TRUE, include.events = TRUE,
-    include.nobs = TRUE, include.missings = TRUE, include.zph = TRUE, ...) {
+    include.nobs = TRUE, include.missings = TRUE, include.zph = TRUE,
+    include.frailty = TRUE, ...) {
 
   coefficients <- coef(model, ...)
   coefficient.names <- names(coefficients)
@@ -683,9 +685,22 @@ extract.coxph.penal <- function(model, include.aic = TRUE,
   rs <- 1 - exp( - logtest / model$n)
   maxrs <- 1 - exp((2 * model$loglik[1]) / model$n)
 
+  frailty <- round(model$history[[1]]$theta, 2)
+  pfrailty <- round(summary(model)$coefficients[
+                    grep("frailty", rownames(c)), "p"], 2)
   gof <- numeric()
   gof.names <- character()
   gof.decimal <- logical()
+  if (include.frailty == TRUE) {
+    gof <- c(gof, frailty)
+    gof.names <- c(gof.names, "Frailty (Variance)")
+    gof.decimal <- c(gof.decimal, TRUE)
+  }
+  if (include.frailty == TRUE) {
+    gof <- c(gof, pfrailty)
+    gof.names <- c(gof.names, "Frailty (p-value)")
+    gof.decimal <- c(gof.decimal, TRUE)
+  }
   if (include.aic == TRUE) {
     gof <- c(gof, aic)
     gof.names <- c(gof.names, "AIC")
@@ -738,7 +753,6 @@ extract.coxph.penal <- function(model, include.aic = TRUE,
 
 setMethod("extract", signature = className("coxph.penal", "survival"),
     definition = extract.coxph.penal)
-
 
 # extension for clogit objects (survival package)
 extract.clogit <- function(model, include.aic = TRUE, include.rsquared = TRUE,
