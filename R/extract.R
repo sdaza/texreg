@@ -664,8 +664,6 @@ extract.coxph <- function(model, include.aic = TRUE, include.rsquared = TRUE,
 setMethod("extract", signature = className("coxph", "survival"),
     definition = extract.coxph)
 
-
-
 # extension for coxph.penal objects (survival package)
 extract.coxph.penal <- function(model, include.aic = TRUE,
     include.rsquared = TRUE, include.maxrs = TRUE, include.events = TRUE,
