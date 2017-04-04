@@ -690,16 +690,6 @@ extract.coxph.penal <- function(model, include.aic = TRUE,
   gof <- numeric()
   gof.names <- character()
   gof.decimal <- logical()
-  if (include.frailty == TRUE) {
-    gof <- c(gof, frailty)
-    gof.names <- c(gof.names, "Frailty (Variance)")
-    gof.decimal <- c(gof.decimal, TRUE)
-  }
-  if (include.frailty == TRUE) {
-    gof <- c(gof, pfrailty)
-    gof.names <- c(gof.names, "Frailty (p-value)")
-    gof.decimal <- c(gof.decimal, TRUE)
-  }
   if (include.aic == TRUE) {
     gof <- c(gof, aic)
     gof.names <- c(gof.names, "AIC")
@@ -724,6 +714,16 @@ extract.coxph.penal <- function(model, include.aic = TRUE,
     gof <- c(gof, n)
     gof.names <- c(gof.names, "Num.\ obs.")
     gof.decimal <- c(gof.decimal, FALSE)
+  }
+    if (include.frailty == TRUE) {
+    gof <- c(gof, frailty)
+    gof.names <- c(gof.names, "Frailty (Variance)")
+    gof.decimal <- c(gof.decimal, TRUE)
+  }
+  if (include.frailty == TRUE) {
+    gof <- c(gof, pfrailty)
+    gof.names <- c(gof.names, "Frailty (p-value)")
+    gof.decimal <- c(gof.decimal, TRUE)
   }
   if (include.missings == TRUE) {
     gof <- c(gof, mis)
